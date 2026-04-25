@@ -68,4 +68,4 @@ if __name__ == "__main__":
         ],
         cache_examples=False,
         title=_L("翻译器"),
-    ).launch(css="#gradio-share-link-button-0 { display: none; }")
+    ).launch(css="#gradio-share-link-button-0 { display: none; }", ssr_mode=False)
