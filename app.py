@@ -1,7 +1,13 @@
+import os
 import json
 import requests
 import gradio as gr
-from utils import API_TRANS, KEY_TRANS, EN_US
+
+EN_US = os.getenv("LANG") != "zh_CN.UTF-8"
+API_TRANS = os.getenv("api_caiyun")
+KEY_TRANS = os.getenv("apikey_caiyun")
+if not (API_TRANS and KEY_TRANS):
+    raise EnvironmentError("请检查环境变量 api_caiyun 和 apikey_caiyun")
 
 ZH2EN = {
     "输入文本区域": "Input text area",
@@ -49,8 +55,8 @@ def infer(source, direction):
     return status, result
 
 
-if __name__ == "__main__":
-    gr.Interface(
+def main():
+    return gr.Interface(
         fn=infer,
         inputs=[
             gr.TextArea(label=_L("输入文本区域"), placeholder=_L("在这里输入文本...")),
@@ -68,4 +74,8 @@ if __name__ == "__main__":
         ],
         cache_examples=False,
         title=_L("翻译器"),
-    ).launch(css="#gradio-share-link-button-0 { display: none; }", ssr_mode=False)
+    )
+
+
+if __name__ == "__main__":
+    main().launch(css="#gradio-share-link-button-0 { display: none; }", ssr_mode=False)
